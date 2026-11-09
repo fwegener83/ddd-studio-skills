@@ -1,0 +1,11 @@
+{
+  "name": "ddd-studio",
+  "version": "0.1.0",
+  "description": "Agent skills that work on a DDD Studio model: propose a cut into bounded contexts from a Big Picture board, challenge an existing cut, and check that the example data of a flow is consistent.",
+  "author": {
+    "name": "Florian Wegener"
+  },
+  "homepage": "https://ddd-studio.dev",
+  "repository": "https://github.com/fwegener83/ddd-studio-skills",
+  "keywords": ["ddd", "domain-driven-design", "event-storming", "bounded-context", "context-map", "ddd-studio"]
+}

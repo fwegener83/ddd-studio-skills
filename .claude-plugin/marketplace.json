@@ -1,0 +1,14 @@
+{
+  "name": "ddd-studio-skills",
+  "description": "Agent skills that work on a DDD Studio model: find and challenge the cut into bounded contexts, and check that the example data of a flow makes sense.",
+  "owner": {
+    "name": "Florian Wegener"
+  },
+  "plugins": [
+    {
+      "name": "ddd-studio",
+      "source": "./plugins/ddd-studio",
+      "description": "Skills for DDD Studio: propose-context-cut, challenge-context-cut, check-flow-data."
+    }
+  ]
+}

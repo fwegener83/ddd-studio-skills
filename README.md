@@ -79,3 +79,7 @@ skills find.
 [library-example](https://github.com/fwegener83/library-example) tutorial,
 where it was written after use and tested by fresh agents; here it is
 detached from that project's files.
+
+## License
+
+[MIT](LICENSE)

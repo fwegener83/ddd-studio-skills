@@ -69,3 +69,17 @@ zu sehen.
 | Schadmeldung erledigt | Triebzug 4717 statt 4711 |
 | Ingenieurin prüft offene Schadmeldungen | SM-2211 steht noch auf „offen“, obwohl sie erledigt ist |
 | Technische Freigabe erteilt | 1 offene Fristarbeit, die Invariante verlangt 0 |
+
+## Testläufe (09.11.2026)
+
+Je ein frischer Agent ohne diese Datei, mit Veröffentlichen:
+
+| Skill | Ergebnis | Dauer |
+|---|---|---|
+| `propose-context-cut` | 5 Notizen, 3 Schnitte als Vorschläge; alle drei Signale gefunden | ca. 3 Min., 15 Aufrufe |
+| `challenge-context-cut` | 6 Notizen (3 blockierend, 2 sollte behoben werden, 1 was hält), 10 Vorschläge | ca. 4 Min., 40 Aufrufe |
+| `check-flow-data` | 4 Notizen, 7 Vorschläge; alle vier Fehler gefunden | ca. 3 Min., 28 Aufrufe |
+| `clear-agent-notes` | im Workspace „ICE-Werk (Demo)“: 2 Agenten-Notizen gelöscht, 5 andere behalten | 7 Aufrufe |
+
+Die Notizen dieser Läufe stehen noch in den drei Demo-Workspaces. Vor der
+Demo mit `clear-agent-notes` entfernen.

@@ -15,25 +15,31 @@ not remove them. This skill does, and nothing else.
   `Agent · ` followed by the name of one of the skills of this plugin
   (`propose-context-cut`, `challenge-context-cut`, `check-flow-data`), and
   its author shows it was written via an agent (`via: "mcp"`). A note that
-  fails either test stays, even if it looks like an agent's.
+  fails either test stays, even if it looks like an agent's. `via: "mcp"`
+  alone means little (any tool can write through MCP); the marker is the
+  real filter.
 - **Answers make it a conversation.** If people have commented on or voted
   in an agent note, it is no longer only the agent's. List those notes and
   ask before deleting them, unless the user said to reset everything.
 - **Say first, then delete.** Before deleting, tell the user how many notes
-  you will delete, per canvas. Deleting cannot be undone.
+  you will delete, per canvas, and wait for a yes. Deleting cannot be
+  undone. If the user already said to go ahead, announce the counts and
+  delete in the same turn.
 - **Nothing else changes.** No cards, nodes, mappings, slices or versions.
 
 ## Steps
 
-1. Find the workspace (`list_workspaces`; ask if the user did not name it).
+1. Find the workspace: use the id if given, otherwise `list_workspaces`
+   and ask.
 2. `list_notes` for the workspace (open and resolved). Keep the notes that
-   pass both tests under "Only agent notes". Use `get_note` to check for
-   comments and votes where `commentCount` is above zero.
+   pass both tests under "Only agent notes". Where `commentCount` or
+   `affectsMeCount` is above zero, people have answered: read it with
+   `get_note` (comments, votes on proposals).
 3. Tell the user what will be deleted: the count per canvas (board, context
    map, flow), and the notes with comments or votes, if any.
 4. Delete with `delete_note`, one by one.
 5. `list_notes` again and report: deleted, kept (with the reason), and
-   that the remaining notes were written by people.
+   that the remaining notes are not from this plugin's skills.
 
 If the user restricts it ("only the flow notes", "only check-flow-data"),
 apply the restriction to the list in step 2.

@@ -10,11 +10,18 @@ to people.
 | `propose-context-cut` | Reads a Big Picture Event Storming board and proposes two or three alternative cuts into bounded contexts, each boundary backed by heuristics and the cards they rest on. | A Big Picture exists, the cut does not. |
 | `challenge-context-cut` | Challenges an existing cut and context map: language, ownership of rules, dependency cycles, scenarios, mapping patterns. Findings with evidence and alternatives. | Before anything is built on the cut, and whenever it changes. |
 | `check-flow-data` | Reads a flow as a story and checks that its example data can all be true together: identities, times, quantities, invariants, policy conditions, read-model rows. | Before slices become test scenarios, or whenever a flow's examples change. |
+| `clear-agent-notes` | Removes the notes the other three published, and only those. | Before a demo or a fresh run. |
 
-All three share four rules: **propose, do not decide**; **evidence or
+The first three publish their results in DDD Studio as **notes** where the
+model is (on the board, on the context map, under the slice of a flow),
+each starting with `Agent · <skill> · <kind>`. Alternatives go under the
+note as **proposals** that people vote on with 👍/👎. The agent never
+votes and never resolves a note: people decide. Ask for "report only" to
+get the findings in the conversation without writing anything.
+
+All of them share four rules: **propose, do not decide**; **evidence or
 silence** (every finding quotes what it rests on); **say what holds**; and
-**change nothing** in the model unless the user says so (and then only notes
-or a new board, never the user's own material).
+**change nothing** in the model: notes and comments only.
 
 ## Install
 
@@ -46,7 +53,8 @@ the project and trusts the folder:
 ```
 
 The skills are then available as `/ddd-studio:propose-context-cut`,
-`/ddd-studio:challenge-context-cut` and `/ddd-studio:check-flow-data`, and
+`/ddd-studio:challenge-context-cut`, `/ddd-studio:check-flow-data` and
+`/ddd-studio:clear-agent-notes`, and
 Claude uses them on its own when a request matches.
 
 The skills need the DDD Studio MCP server connected in the same session
@@ -66,12 +74,12 @@ for example:
 - Reports from challenge-context-cut go to `docs/reviews/<label>-context-cut.md`
 ```
 
-## Example
+## Examples
 
-`examples/ice-werk/` describes a demo workspace: a fictitious overnight
-shift in a high-speed train depot (German), with a Big Picture board, a
-context map with three contexts and one flow. It is built to show what the
-skills find.
+- `examples/demo/` describes three small demo workspaces, one per skill,
+  with no notes in them, so that what the agent adds stands out.
+- `examples/ice-werk/` describes a larger workspace with the same
+  fictitious domain (an overnight shift in a train depot, German).
 
 ## Origin
 

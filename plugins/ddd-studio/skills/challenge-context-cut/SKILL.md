@@ -1,6 +1,6 @@
 ---
 name: challenge-context-cut
-description: Challenge the cut into bounded contexts and the context map in DDD Studio before anything is built on it. Use at the end of strategic design, before work that builds on the cut, after a context is added, merged or split, after a mapping is turned, or when asked to "challenge", "stress-test" or "review the domain cut / context cut / context map". Produces findings with evidence and alternatives; it never changes the model.
+description: Challenge the cut into bounded contexts and the context map in DDD Studio before anything is built on it. Use at the end of strategic design, before work that builds on the cut, after a context is added, merged or split, after a mapping is turned, or when asked to "challenge", "stress-test" or "review the domain cut / context cut / context map". Produces findings with evidence and alternatives, published as notes and votable proposals on the context map; it never changes the model.
 ---
 
 # Challenge the context cut
@@ -28,8 +28,9 @@ The heuristics are in `heuristics.md` in this folder. Read it first.
   question "whose rule is it?" comes before "which way do the
   dependencies point?". Do not let the cheapest technical fix decide who
   owns a rule.
-- **Propose, do not decide.** Change nothing in Studio or in the repo
-  except the report. Every serious finding comes with at least one
+- **Propose, do not decide.** Change nothing in the model or in the repo.
+  The findings go onto the context map as notes and proposals (see
+  "Publishing to DDD Studio"); the people decide. Every serious finding comes with at least one
   alternative and what it costs. Business questions go out as questions
   for the people who decide; architecture questions as proposed
   decisions with a recommended option.
@@ -97,9 +98,42 @@ what a review can quote by file and line; use it when it is current.
 8. **Report** (format below). Give the user the findings and the list of
    questions in the conversation. Save the report as a file only where
    the project says (its `CLAUDE.md`) or the user asks; a common place is
-   `docs/reviews/<label>-context-cut.md`. On the user's go, add each
-   question as a note on the context map in Studio (`create_note`,
-   canvas `context-map`, targets: the contexts or mappings concerned).
+   `docs/reviews/<label>-context-cut.md`.
+9. **Publish** the findings as notes on the context map (next section),
+   unless the user asked for a report only.
+
+## Publishing to DDD Studio
+
+By default the results go into DDD Studio as notes, so that the people can
+answer them where the model is: comment, vote on a proposal, decide. If the
+user asks for a report only ("report only", "nur Bericht", "dry run"), skip
+this section and stop after the report.
+
+- **Notes and comments, nothing else.** Use only `create_note` and
+  `add_comment`. Never change cards, nodes, mappings or slices. Never
+  resolve a note and never vote: deciding is the people's job, and the tools
+  do not let an agent vote.
+- **Marker.** Every note body starts with the line
+  `Agent · challenge-context-cut · <kind>` (`<kind>` as listed under "What"). People see at once that an agent
+  wrote it, and `clear-agent-notes` finds it again. Write everything after
+  the marker in the language of the model.
+- **Shape of a note.** After the marker: the claim in one sentence; then
+  the evidence, quoted; then in one sentence why it matters. Keep it under
+  about 600 characters: notes are read on a canvas, not in a report.
+- **Few notes.** At most 7 notes per run. What does not make the cut stays
+  in the report in the conversation.
+- **Alternatives are proposals.** Put each alternative under its note with
+  `add_comment` and `proposal: true`: what would change and what it costs,
+  in two or three sentences. The people vote on proposals and decide.
+- **No duplicates.** Before writing, `list_notes` on the same canvas. If an
+  open note with this skill's marker already makes the same claim, do not
+  write it again; say so in the report. If many notes of an earlier run are
+  still open, ask the user whether to clear them first with
+  `clear-agent-notes`.
+- **Where.** On the context map: `create_note` with canvas `{ view: "context-map" }` and targets of kind `node` (the bounded contexts or external systems concerned) or `mapping` (the context mapping concerned).
+- **What.** One note per finding of severity blocking or should fix (kind `blockierend`/`blocking` or `sollte behoben werden`/`should fix`), at most six, with its alternatives as proposals. A question for the business that belongs to a finding goes into that note as its last line. Then one note `Was hält`/`What holds` (kind `hält`/`holds`) pointing at the parts of the cut that passed, with the tests they passed, so that the map does not only show faults.
+- **Say what you published.** End the conversation report with the number
+  of notes and proposals written, and where.
 
 ## Report format
 

@@ -1,7 +1,7 @@
 {
   "name": "ddd-studio",
-  "version": "0.1.0",
-  "description": "Agent skills that work on a DDD Studio model: propose a cut into bounded contexts from a Big Picture board, challenge an existing cut, and check that the example data of a flow is consistent.",
+  "version": "0.2.0",
+  "description": "Agent skills that work on a DDD Studio model and publish their findings as notes with votable proposals: propose a cut into bounded contexts, challenge an existing cut, check the example data of a flow, and clear the agent notes again.",
   "author": {
     "name": "Florian Wegener"
   },

@@ -1,6 +1,6 @@
 ---
 name: propose-context-cut
-description: Propose candidate bounded contexts from a Big Picture Event Storming board in DDD Studio, with the heuristics that support each boundary. Use when a Big Picture exists but no cut does yet, or when asked to "find the contexts", "where do we cut", "propose a context cut" or "suggest bounded contexts". Produces two or three alternative cuts with evidence and open questions; it never changes the board or the model.
+description: Propose candidate bounded contexts from a Big Picture Event Storming board in DDD Studio, with the heuristics that support each boundary. Use when a Big Picture exists but no cut does yet, or when asked to "find the contexts", "where do we cut", "propose a context cut" or "suggest bounded contexts". Produces two or three alternative cuts with evidence and open questions, published as notes and votable proposals on the board; it never changes cards or the model.
 ---
 
 # Propose a context cut
@@ -29,8 +29,9 @@ The heuristics are in `heuristics.md` in this folder. Read it first.
 - **The rule goes with its decider.** When a policy or rule involves
   cards on both sides of a boundary, say which side decides it and where
   the board says so. If the board does not say, it is an open question.
-- **Never touch the original board.** Writing back is optional, needs the
-  user's go, and goes to a new board and to notes (see step 7).
+- **Publish, do not edit.** The results go onto the board as notes and
+  proposals (see "Publishing to DDD Studio"). Cards are never moved,
+  changed or deleted.
 
 ## Inputs
 
@@ -87,15 +88,41 @@ not complete.
 6. **Write the proposal** (format below). Open with a summary of at most
    five lines that can be read aloud (the cuts, the hardest question),
    then the full proposal.
-7. **Write back, only if the user says so.** Then: create a NEW sketch
-   board named "Schnittvorschlag (Agent) <date>" or "Context cut proposal
-   (agent) <date>" in the board's language, with one area per candidate
-   context of the recommended cut (area kind "Bounded Context"), the
-   event texts copied into it as event cards in time order
-   (`edit_sketch_board` with a timeline arrangement), tagged
-   `proposal:agent`. Add each open question as a note on the ORIGINAL
-   board, pointing at the cards it is about (`create_note`). Never move,
-   edit or delete cards of the original board.
+7. **Publish** the result as notes on the board (next section), unless
+   the user asked for a report only.
+
+## Publishing to DDD Studio
+
+By default the results go into DDD Studio as notes, so that the people can
+answer them where the model is: comment, vote on a proposal, decide. If the
+user asks for a report only ("report only", "nur Bericht", "dry run"), skip
+this section and stop after the report.
+
+- **Notes and comments, nothing else.** Use only `create_note` and
+  `add_comment`. Never change cards, nodes, mappings or slices. Never
+  resolve a note and never vote: deciding is the people's job, and the tools
+  do not let an agent vote.
+- **Marker.** Every note body starts with the line
+  `Agent · propose-context-cut · <kind>` (`<kind>` as listed under "What"). People see at once that an agent
+  wrote it, and `clear-agent-notes` finds it again. Write everything after
+  the marker in the language of the model.
+- **Shape of a note.** After the marker: the claim in one sentence; then
+  the evidence, quoted; then in one sentence why it matters. Keep it under
+  about 600 characters: notes are read on a canvas, not in a report.
+- **Few notes.** At most 5 notes per run. What does not make the cut stays
+  in the report in the conversation.
+- **Alternatives are proposals.** Put each alternative under its note with
+  `add_comment` and `proposal: true`: what would change and what it costs,
+  in two or three sentences. The people vote on proposals and decide.
+- **No duplicates.** Before writing, `list_notes` on the same canvas. If an
+  open note with this skill's marker already makes the same claim, do not
+  write it again; say so in the report. If many notes of an earlier run are
+  still open, ask the user whether to clear them first with
+  `clear-agent-notes`.
+- **Where.** On the board that was read: `create_note` with canvas `{ view: "sketch-board", boardId }` and targets of kind `card`.
+- **What.** One note "Wo schneiden wir?" / "Where do we cut?" (kind `Schnitt`/`cut`) that points at the cards on both sides of each boundary of the cuts (at most ten cards), with every cut (A, B, C) as a proposal under it: its contexts, its boundaries and its strongest argument against. Then one note for each place where the heuristics disagree and for each question only the business can answer (kind `Frage`/`question`), pointing at the cards concerned; at most four.
+- **Say what you published.** End the conversation report with the number
+  of notes and proposals written, and where.
 
 ## Proposal format
 

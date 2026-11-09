@@ -1,6 +1,6 @@
 ---
 name: check-flow-data
-description: Check that the example data in a DDD Studio flow tells one consistent story - identities, times, quantities, invariants, policy conditions and read-model rows across all slices. Use when a flow has example data, before slices are marked as test scenarios, or when asked to "check the flow", "check the example data", "do the examples make sense" or "review the scenarios". Reports contradictions with evidence; it never changes the model.
+description: Check that the example data in a DDD Studio flow tells one consistent story - identities, times, quantities, invariants, policy conditions and read-model rows across all slices. Use when a flow has example data, before slices are marked as test scenarios, or when asked to "check the flow", "check the example data", "do the examples make sense" or "review the scenarios". Reports contradictions with evidence as notes under the slices concerned, with corrections as votable proposals; it never changes the model.
 ---
 
 # Check the example data of a flow
@@ -31,10 +31,12 @@ The checks are in `checks.md` in this folder. Read it first.
 - **One wrong value, one finding.** If one value breaks several checks
   (a time that is out of order and also breaks an invariant), report it
   once and list every check it breaks.
-- **Report, do not repair.** Change nothing. For each finding propose the
+- **Report, do not repair.** Change no data. For each finding propose the
   smallest correction (which value to change, or that the slice should be
   a rejection instead) and say if more than one correction is possible;
-  the modeller decides which value is wrong.
+  the modeller decides which value is wrong. The findings go under their
+  slices as notes, the corrections as proposals (see "Publishing to DDD
+  Studio").
 - **Say what holds.** List the checks that passed, so that a clean report
   means something.
 
@@ -81,10 +83,42 @@ From DDD Studio (MCP tools `mcp__ddd-studio__*`):
    condition or projection rule the model states), **suspicious** (likely
    wrong, but the model does not say so), **gap** (the story implies a
    step or value that no slice shows).
-5. **Report** (format below) in the conversation. On the user's go, add
-   each finding as a note under its slice in Studio (`create_note`,
-   canvas `{ view: "flow", flowId, sliceId }`, targets: the member nodes),
-   so the modeller sees it where the data is.
+5. **Report** (format below) in the conversation.
+6. **Publish** the findings as notes under their slices (next section),
+   unless the user asked for a report only.
+
+## Publishing to DDD Studio
+
+By default the results go into DDD Studio as notes, so that the people can
+answer them where the model is: comment, vote on a proposal, decide. If the
+user asks for a report only ("report only", "nur Bericht", "dry run"), skip
+this section and stop after the report.
+
+- **Notes and comments, nothing else.** Use only `create_note` and
+  `add_comment`. Never change cards, nodes, mappings or slices. Never
+  resolve a note and never vote: deciding is the people's job, and the tools
+  do not let an agent vote.
+- **Marker.** Every note body starts with the line
+  `Agent · check-flow-data · <kind>` (`<kind>` as listed under "What"). People see at once that an agent
+  wrote it, and `clear-agent-notes` finds it again. Write everything after
+  the marker in the language of the model.
+- **Shape of a note.** After the marker: the claim in one sentence; then
+  the evidence, quoted; then in one sentence why it matters. Keep it under
+  about 600 characters: notes are read on a canvas, not in a report.
+- **Few notes.** At most 8 notes per run. What does not make the cut stays
+  in the report in the conversation.
+- **Alternatives are proposals.** Put each alternative under its note with
+  `add_comment` and `proposal: true`: what would change and what it costs,
+  in two or three sentences. The people vote on proposals and decide.
+- **No duplicates.** Before writing, `list_notes` on the same canvas. If an
+  open note with this skill's marker already makes the same claim, do not
+  write it again; say so in the report. If many notes of an earlier run are
+  still open, ask the user whether to clear them first with
+  `clear-agent-notes`.
+- **Where.** Under the slice where the wrong value is: `create_note` with canvas `{ view: "flow", flowId, sliceId }` and targets of kind `node` (the members that carry the value).
+- **What.** One note per finding (kind `Widerspruch`/`contradiction`, `Regel verletzt`/`rule broken`, `verdächtig`/`suspicious` or `Lücke`/`gap`), contradictions and broken rules first, at most eight. Under each, the smallest correction as a proposal; when two corrections are possible (which of two values is wrong), one proposal each.
+- **Say what you published.** End the conversation report with the number
+  of notes and proposals written, and where.
 
 ## Report format
 

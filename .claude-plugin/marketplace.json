@@ -8,7 +8,7 @@
     {
       "name": "ddd-studio",
       "source": "./plugins/ddd-studio",
-      "description": "Skills for DDD Studio: propose-context-cut, challenge-context-cut, check-flow-data."
+      "description": "Skills for DDD Studio: propose-context-cut, challenge-context-cut, check-flow-data (publish findings as notes), clear-agent-notes."
     }
   ]
 }

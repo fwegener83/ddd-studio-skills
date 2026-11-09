@@ -21,7 +21,9 @@ The heuristics are in `heuristics.md` in this folder. Read it first.
   passage it is based on: a glossary entry, a mapping description, a
   policy rule, a card on the board, a sentence of the sources. A finding
   without a quote is not reported. "Could be a problem some day" is a
-  note, not a finding.
+  note, not a finding. Notes in Studio are someone's open doubt, not a
+  statement of the model: quote them to support a finding, never as its
+  only evidence.
 - **Business before technology.** When a rule crosses a boundary, the
   question "whose rule is it?" comes before "which way do the
   dependencies point?". Do not let the cheapest technical fix decide who
@@ -43,8 +45,13 @@ Read the current state from DDD Studio (MCP tools `mcp__ddd-studio__*`):
   workspace and the conventions it names,
 - contexts, subdomains, aggregates, policies: `get_model_overview`, then
   `get_node` on every bounded context (its `ubiquitousLanguage`), every
-  policy (`handles`, `emits`, `constraints`) and every aggregate whose
-  invariants mention another context's words,
+  policy (`handles`, `emits`, `constraints`), every read model that
+  projects events of another context (its projection rules), and every
+  aggregate whose invariants mention another context's words. In DDD
+  Studio policies, event handlers and process managers live under the
+  domain, not under a context: attribute them by the events they handle,
+  the commands they emit and the slices they appear in, and treat a rule
+  whose owner the model does not name as a question,
 - mappings: `list_mappings` (type, direction, description),
 - the discovery boards: `list_sketch_boards`, `get_sketch_board` (events,
   rules, notes),
@@ -99,12 +106,21 @@ what a review can quote by file and line; use it when it is current.
 ```markdown
 # Context cut challenge: <label>
 
-Input: workspace <name>, model version or date, <what was read>
+Input: workspace <name>, read on <date> (latest saved version: <label>,
+if any; say if it is unknown whether the current state equals it),
+<what was read>
 Run by: <fresh agent | author>, <date>
 
 ## Canvas (short)
 | Context | Purpose | Class. | Decides on its own | Receives | Sends | Own words |
 |---|---|---|---|---|---|---|
+
+## Scenarios (short)
+| # | Case | Contexts | Crossings / round trips | Leads to |
+|---|---|---|---|---|
+
+| Likely change | Contexts touched |
+|---|---|
 
 ## What holds
 - <part of the cut> — <which test it passed>
@@ -134,4 +150,8 @@ a concrete failure yet.
   to the detailed modelling. Add them here as a second mode then, not as
   guesswork now.
 - Whether the example data in the flows is consistent: that is
-  `check-flow-data`.
+  `check-flow-data`. If a data error is also evidence for a finding about
+  the cut (a rule that the data breaks at a boundary), mention it in that
+  finding and point to `check-flow-data` for the rest.
+- A missing strategic classification (core, supporting, generic) is an
+  empty field in the canvas and, at most, a note.

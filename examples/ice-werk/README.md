@@ -12,10 +12,10 @@ echten Werks; Begriffe und Abläufe sind bewusst vereinfacht.
   `werksplanung`), sechs Mappings, ein Flow
   **Nacht von Triebzug 4711: Material fehlt** (12 Slices)
 - Gespeicherte Versionen zum Zurücksetzen vor der Demo:
-  `demo-ausgangsstand` (Board und Modell)
+  `demo-ausgangsstand-v2` (Board) und `demo-ausgangsstand` (Modell)
 
 Die Skills schreiben nur nach Zustimmung zurück, und dann nur Notizen oder
-ein neues Board. Vor einer Demo trotzdem auf `demo-ausgangsstand`
+ein neues Board. Vor einer Demo trotzdem auf diese Versionen
 zurücksetzen, damit keine Notizen eines Probelaufs herumliegen.
 
 ## Demo-Ablauf (Vorschlag)
@@ -82,3 +82,26 @@ Nur für die Vorbereitung. Der Agent bekommt diese Datei in der Demo nicht.
 
 Dazu eine Lücke: Die Beschreibung erzählt vom Kurier mit den Ersatzteilen,
 kein Slice zeigt ihn.
+
+Nicht eingebaut, aber zu Recht gefunden (Testlauf 2026-11-09): Keine
+Projektionsregel der Bereitstellungsübersicht legt eine Zeile an, und kein
+Slice plant die Bereitstellung. Spielt man nur den Flow ab, bleibt die
+Übersicht leer.
+
+## Testläufe
+
+Am 2026-11-09 hat je ein frischer Agent jeden Skill gegen diesen Workspace
+laufen lassen, ohne diese Datei zu kennen:
+
+- `propose-context-cut`: alle fünf Konflikte des Boards gefunden, drei
+  Schnitte und ein verworfener; 5 Aufrufe, etwa 4,5 Minuten.
+- `challenge-context-cut`: alle eingebauten Schwächen gefunden, dazu
+  zwei Folgefehler (die Freigabe hebt „gefährdet“ der Disposition auf;
+  Betriebszentrale fehlt auf der Context Map); 21 Aufrufe, etwa 5 Minuten.
+- `check-flow-data`: alle acht Fehler und die Lücke gefunden, dazu die
+  fehlende Herkunft der Bereitstellung; 41 Aufrufe, knapp 10 Minuten.
+  Danach wurde der Skill auf weniger Aufrufe getrimmt.
+
+Für eine Live-Demo ist das zu lang zum Zuschauen. Besser: den Lauf vorher
+aufnehmen oder live starten und während der Wartezeit erklären, was er
+prüft.

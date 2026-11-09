@@ -68,6 +68,12 @@ For each rule that involves more than one context:
   *dependencies* is a finding.
 - Check direction against ownership (§3): the arrow should follow who
   owns the rule, not what is easiest to turn.
+- When both sides really need something from each other, turning one
+  arrow does not break the cycle. Then the options are: let one side own
+  both contracts (it publishes its facts and accepts the other side's
+  input through its own interface, in its own words), move the shared
+  decision to one side, or name the relationship a partnership and plan
+  joint releases on purpose.
 
 ## 5. Scenarios: play it through
 

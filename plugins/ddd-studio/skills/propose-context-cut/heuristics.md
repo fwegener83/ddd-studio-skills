@@ -27,6 +27,9 @@ cards change, a boundary is likely.
 
 - Look for: consecutive events whose actors differ; a role that appears
   only in one stretch of the timeline; a handover between roles.
+- Look at the readers too: who reads which read model. A view read by
+  one group in one stretch of the timeline belongs to that stretch; a
+  view read on both sides of a boundary is information that crosses it.
 - Careful: one department is not automatically one context, and one
   role can work in two contexts. The actor is evidence, not proof.
 
@@ -99,6 +102,10 @@ Canvas*; Nick Tune; the anti-patterns most reviews find):
   spread over the callers. Cut by decisions and language instead.
 - **Cut by department only**: a department can span two models, and two
   departments can share one.
+- **Cut by process phase**: the phases of a Big Picture are stretches
+  of the process, not models. A decision tagged with a late phase (a
+  release, an approval) usually belongs to the people who decide it,
+  not to the phase it happens in.
 - **Cut by technology or legacy** ("notifications", "the old system")
   with no business decision of its own.
 - **Pass-through context**: receives and forwards, decides nothing.

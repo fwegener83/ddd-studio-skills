@@ -24,9 +24,13 @@ The checks are in `checks.md` in this folder. Read it first.
   reported.
 - **The model is the measure.** Judge example data against what the
   model states: invariants, command constraints, policy constraints,
-  projection rules, slice descriptions. Do not invent rules from domain
-  knowledge. Where your domain knowledge suggests a problem the model
-  does not state, report it as a question, not as a finding.
+  projection rules, the ubiquitous language of the contexts, slice and
+  flow descriptions. Do not invent rules from domain knowledge. Where
+  your domain knowledge suggests a problem the model does not state,
+  report it as **suspicious** or as a question, not as a rule broken.
+- **One wrong value, one finding.** If one value breaks several checks
+  (a time that is out of order and also breaks an invariant), report it
+  once and list every check it breaks.
 - **Report, do not repair.** Change nothing. For each finding propose the
   smallest correction (which value to change, or that the slice should be
   a rejection instead) and say if more than one correction is possible;
@@ -41,15 +45,24 @@ From DDD Studio (MCP tools `mcp__ddd-studio__*`):
 - the workspace and the flow: if the user did not name them,
   `list_workspaces` / `list_flows` and ask; if the project's `CLAUDE.md`
   has a "DDD Studio" section, use the workspace it names,
+- the names of contexts and nodes: `get_model_overview` (one call; the
+  slices only carry ids),
 - the flow's slices in order: `list_slices` with the flow id (name, type,
   order, members, description, exampleData, and, where set, trigger,
-  consulted occurrences, rejection, answer),
-- every member node: `get_node` (payload schemas, `identifiedBy`,
-  invariants, constraints, projection rules, `handles`/`emits`),
+  consulted occurrences, rejection, answer). When a slice has a policy,
+  event handler or process manager as a member but no trigger field, its
+  trigger is the nearest event to its left that the member handles,
+- the member nodes that carry rules: `get_node` on the aggregates
+  (`identifiedBy`, invariants), the policies (`handles`, constraints) and
+  the read models (projection rules), and on the bounded contexts whose
+  glossary defines a word the data uses. Commands and events only when
+  they have constraints; actors and queries without parameters not at
+  all. Fewer calls keep the check fast enough to run live,
 - the schema report: `validate_model` (run it first; schema warnings are
   reported separately and not repeated as findings),
 - optionally the GWT features of the units in the flow: `list_features`
-  (their given/when/then data can be checked the same way).
+  (their given/when/then data can be checked the same way; an empty list
+  is normal when no slice is marked as a scenario).
 
 ## Steps
 

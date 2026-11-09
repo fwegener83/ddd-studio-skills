@@ -51,9 +51,10 @@ slice may rely on everything to its left.
   one to its left) exists, and its data satisfies the policy's condition
   (its constraints and rule text).
 - Compute the condition with the story's values (times, amounts,
-  states). A policy that fires although its condition is not met, or a
-  story where the condition is met and the reaction is missing, is a
-  finding.
+  states). For a time window, "now" is the time of the triggering event
+  unless the model says otherwise. A policy that fires although its
+  condition is not met, or a story where the condition is met and the
+  reaction is missing, is a finding.
 
 ## 6. Read models show what happened
 
@@ -63,6 +64,10 @@ slice may rely on everything to its left.
 - Finding: a row that should have changed but did not (a state left
   behind), a row that should exist but is missing, a row with no event
   behind it, a value that differs from the event it came from.
+- Also check that some projection rule creates the row at all. Rules that
+  only update an existing row ("set the status of the row") need an
+  earlier event that adds it; if no slice shows that event, the row has
+  no origin in the story (a gap).
 - The query's answer (where set) is consistent with the rows and the
   query's parameters.
 
@@ -70,7 +75,10 @@ slice may rely on everything to its left.
 
 - Amounts, counts and prices that relate to each other are consistent:
   a shortage is not larger than what was asked for, parts add up to a
-  total, a balance follows from its bookings.
+  total, a balance follows from its bookings. These are common sense,
+  not model rules: report a mismatch as a contradiction only when the
+  model or a description ties the two values together, otherwise as
+  suspicious.
 - Units and currencies stay the same for the same value.
 
 ## 8. References point backwards

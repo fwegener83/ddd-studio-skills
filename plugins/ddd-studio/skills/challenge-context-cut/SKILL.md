@@ -62,6 +62,11 @@ Read the current state from DDD Studio (MCP tools `mcp__ddd-studio__*`):
 
 If the project has written sources (requirements, a log of business
 decisions, architecture decision records), read them and quote them. If
+there are none, the model itself is the source: glossary entries, mapping
+and node descriptions, invariants and constraints. Then a rule whose owner
+the model does not state is an open business question. To read the whole
+model in one call instead of many `get_node` calls, `export_esdm` returns
+all files without changing anything. If
 the model has been exported (`export_esdm`) into the repo, the export is
 what a review can quote by file and line; use it when it is current.
 
@@ -97,7 +102,8 @@ what a review can quote by file and line; use it when it is current.
    cut (move the rule, turn the arrow, merge, split) and what it costs.
 8. **Report** (format below). Give the user the findings and the list of
    questions in the conversation, in the language of the user's request;
-   the headings may be translated. Save the report as a file only where
+   the headings and the values of Severity, Lens and Level may be
+   translated. Save the report as a file only where
    the project says (its `CLAUDE.md`) or the user asks; a common place is
    `docs/reviews/<label>-context-cut.md`.
 9. **Publish** the findings as notes on the context map (next section),
@@ -121,7 +127,7 @@ this section and stop after the report.
 - **Shape of a note.** After the marker: the claim in one sentence; then
   the evidence, quoted; then in one sentence why it matters. Keep it under
   about 600 characters: notes are read on a canvas, not in a report.
-- **Few notes.** At most 7 notes per run. What does not make the cut stays
+- **Few notes.** At most 7 notes per run (see "What"). What does not make the cut stays
   in the report in the conversation.
 - **Alternatives are proposals.** Put each alternative under its note with
   `add_comment` and `proposal: true`: what would change and what it costs,
@@ -131,8 +137,8 @@ this section and stop after the report.
   write it again; say so in the report. If many notes of an earlier run are
   still open, ask the user whether to clear them first with
   `clear-agent-notes`.
-- **Where.** On the context map: `create_note` with canvas `{ view: "context-map" }` and targets of kind `node` (the bounded contexts or external systems concerned) or `mapping` (the context mapping concerned).
-- **What.** One note per finding of severity blocking or should fix (kind `blockierend`/`blocking` or `sollte behoben werden`/`should fix`), at most six, with its alternatives as proposals. A question for the business that belongs to a finding goes into that note as its last line. Then one note `Was hält`/`What holds` (kind `hält`/`holds`) pointing at the parts of the cut that passed, with the tests they passed, so that the map does not only show faults.
+- **Where.** On the context map: `create_note` with canvas `{ view: "context-map" }` and targets of kind `node` (the bounded contexts, external systems or policies concerned; for a rule, the policy and the contexts on both sides) or `mapping` (the context mapping concerned).
+- **What.** At most seven notes: up to six findings and one note on what holds. One note per finding of severity blocking or should fix (kind `blockierend`/`blocking` or `sollte behoben werden`/`should fix`), with its alternatives as proposals; findings with one root cause (a cycle and the unnegotiated mapping that closes it, a split rule and the timing gap it causes) share one note that names the follow-on. Write the kind in the language of the model. A question for the business that belongs to a finding goes into that note as its last line. Then one note `Was hält`/`What holds` (kind `hält`/`holds`) pointing at the parts of the cut that passed, with the tests they passed, so that the map does not only show faults.
 - **Say what you published.** End the conversation report with the number
   of notes and proposals written, and where.
 
@@ -174,7 +180,8 @@ Run by: <fresh agent | author>, <date>
 ```
 
 Severity: **blocking** means later work would build on it and become
-wrong (a cycle, a rule with two owners). **Should fix** means the cut
+wrong (a cycle, a rule with two owners, also when a glossary restates
+another context's rule). **Should fix** means the cut
 holds but a word or mapping is misleading. **Note** means a risk without
 a concrete failure yet.
 

@@ -1,0 +1,19 @@
+{
+  "name": "ddd-studio",
+  "version": "0.2.0",
+  "description": "Agent skills that work on a DDD Studio model and publish their findings as notes with votable proposals: propose a cut into bounded contexts, challenge an existing cut, check the example data of a flow, and clear the agent notes again.",
+  "author": {
+    "name": "Florian Wegener"
+  },
+  "homepage": "https://ddd-studio.dev",
+  "repository": "https://github.com/fwegener83/ddd-studio-skills",
+  "license": "MIT",
+  "keywords": [
+    "ddd",
+    "domain-driven-design",
+    "event-storming",
+    "bounded-context",
+    "context-map",
+    "ddd-studio"
+  ]
+}

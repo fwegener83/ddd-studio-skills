@@ -57,9 +57,11 @@ From DDD Studio (MCP tools `mcp__ddd-studio__*`):
 - the member nodes that carry rules: `get_node` on the aggregates
   (`identifiedBy`, invariants), the policies (`handles`, constraints) and
   the read models (projection rules), and on the bounded contexts whose
-  glossary defines a word the data uses. Commands and events only when
-  they have constraints; actors and queries without parameters not at
-  all. Fewer calls keep the check fast enough to run live,
+  glossary defines a word the data uses. Load a command only when its
+  data looks wrong and you need to know whether a constraint allows it,
+  and a query only when the slice description or an answer suggests a
+  filter. Skip actors. Fewer calls keep the check fast enough to run
+  live,
 - the schema report: `validate_model` (run it first; schema warnings are
   reported separately and not repeated as findings),
 - optionally the GWT features of the units in the flow: `list_features`
@@ -78,12 +80,15 @@ From DDD Studio (MCP tools `mcp__ddd-studio__*`):
 3. **Run the checks** in `checks.md`, in order: identity, command and
    event, time, invariants and constraints, triggers and policies, read
    models, quantities, references, description against data.
-4. **Classify** each finding: **contradiction** (two values cannot both be
+4. **Classify** each finding and list the checks it breaks (by their
+   numbers in `checks.md`): **contradiction** (two values cannot both be
    true), **rule broken** (data breaks an invariant, constraint, policy
    condition or projection rule the model states), **suspicious** (likely
    wrong, but the model does not say so), **gap** (the story implies a
    step or value that no slice shows).
-5. **Report** (format below) in the conversation.
+5. **Report** (format below) in the conversation, in the language of the
+   user's request; the headings may be translated. Name slices by their
+   name, not by a number.
 6. **Publish** the findings as notes under their slices (next section),
    unless the user asked for a report only.
 
@@ -116,7 +121,7 @@ this section and stop after the report.
   still open, ask the user whether to clear them first with
   `clear-agent-notes`.
 - **Where.** Under the slice where the wrong value is: `create_note` with canvas `{ view: "flow", flowId, sliceId }` and targets of kind `node` (the members that carry the value).
-- **What.** One note per finding (kind `Widerspruch`/`contradiction`, `Regel verletzt`/`rule broken`, `verdächtig`/`suspicious` or `Lücke`/`gap`), contradictions and broken rules first, at most eight. Under each, the smallest correction as a proposal; when two corrections are possible (which of two values is wrong), one proposal each.
+- **What.** One note per finding (kind `Widerspruch`/`contradiction`, `Regel verletzt`/`rule broken`, `verdächtig`/`suspicious` or `Lücke`/`gap`), contradictions and broken rules first, at most eight. When the two values of a contradiction sit in different slices, put the note under the slice whose rule fails or whose value is most likely wrong, and name the other slice in the note. Under each, the smallest correction as a proposal; when two corrections are possible (which of two values is wrong), one proposal each.
 - **Say what you published.** End the conversation report with the number
   of notes and proposals written, and where.
 
@@ -135,6 +140,7 @@ validate_model: <clean | n schema warnings, listed below>
 ## Findings
 ### D1 <one-line claim>
 - Kind: contradiction | rule broken | suspicious | gap
+- Checks: <numbers from checks.md>
 - Where: slice "<name>" (#n), member <node>, field <field>
 - Evidence: "<value>" here, but "<value>" in slice "<name>" (#m) | breaks <invariant/constraint/rule>: "<quote>"
 - Correction: <smallest change>; or <alternative>

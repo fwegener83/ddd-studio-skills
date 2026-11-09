@@ -96,7 +96,8 @@ what a review can quote by file and line; use it when it is current.
 7. **Alternatives.** For each serious finding, sketch at least one other
    cut (move the rule, turn the arrow, merge, split) and what it costs.
 8. **Report** (format below). Give the user the findings and the list of
-   questions in the conversation. Save the report as a file only where
+   questions in the conversation, in the language of the user's request;
+   the headings may be translated. Save the report as a file only where
    the project says (its `CLAUDE.md`) or the user asks; a common place is
    `docs/reviews/<label>-context-cut.md`.
 9. **Publish** the findings as notes on the context map (next section),

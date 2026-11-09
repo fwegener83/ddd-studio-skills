@@ -41,9 +41,10 @@ From DDD Studio (MCP tools `mcp__ddd-studio__*`):
   if the project's `CLAUDE.md` has a "DDD Studio" section, use the
   workspace it names,
 - the board: `list_sketch_boards`, then `get_sketch_board` (cards,
-  sections, tags, connections, and the board's notes),
-- the open notes on the board: `get_note` for the ones that look like
-  conflicts or language questions.
+  sections, tags, connections),
+- the notes on the board: `list_notes` with the `boardId` (you need this
+  list anyway to avoid duplicates), and `get_note` for the ones that look
+  like conflicts or language questions.
 
 If the project has written sources (a brief, interview notes), read them
 too and quote them. The board is evidence of what people said; it is
@@ -52,9 +53,9 @@ not complete.
 ## Steps
 
 1. **Read the board in time order.** List the events left to right with
-   their tags (phases, sources). `get_sketch_board` does not return card
-   positions: take the order from phase or sequence tags, from the
-   connections, or from the order the cards come back in, and say in the
+   their tags (phases, sources). `get_sketch_board` returns neither card
+   positions nor a reliable order: take the order from sequence tags
+   (such as `seq:07`), phase tags and connections, and say in the
    proposal where the order is inferred. List actors, external systems,
    policies, read models and which event each one is connected to. A card
    without a connection may be placed next to its event on the canvas;
@@ -70,10 +71,13 @@ not complete.
    its purpose in one sentence, the events it owns, the decisions it
    makes on its own, its words, and the actors who decide in it. Leave a
    field empty rather than invent it. An empty purpose is itself a
-   question for the humans: put it in the list.
+   question for the humans: put it in the list. An event that fits no
+   candidate (no actor, no connection) is listed as unassigned, with a
+   question.
 4. **Form two or three alternative cuts.** Typically: one finer, one
    coarser, and one that resolves the hardest open question differently
-   (for example, which side owns a disputed rule). Never include an
+   (for example, which side owns a disputed rule); such a cut may be
+   written as a change to another one ("like A, but …"). Never include an
    option you would reject yourself; list it under "Rejected cuts" with
    the reason instead. You may mark one cut as the recommended starting
    point for the discussion; then say what would change the
@@ -84,10 +88,12 @@ not complete.
    two cases along the timeline and count the crossings: a crossing is an
    event, command or piece of information that has to go from one
    candidate context to another for the case to go on. Count plans made
-   the day before and external systems separately.
+   the day before and external systems separately, and say which
+   crossings the board shows and which you inferred.
 6. **Write the proposal** (format below). Open with a summary of at most
    five lines that can be read aloud (the cuts, the hardest question),
-   then the full proposal.
+   then the full proposal. Write the report in the language of the user's
+   request; the headings of the format below may be translated.
 7. **Publish** the result as notes on the board (next section), unless
    the user asked for a report only.
 
@@ -120,7 +126,7 @@ this section and stop after the report.
   still open, ask the user whether to clear them first with
   `clear-agent-notes`.
 - **Where.** On the board that was read: `create_note` with canvas `{ view: "sketch-board", boardId }` and targets of kind `card`.
-- **What.** One note "Wo schneiden wir?" / "Where do we cut?" (kind `Schnitt`/`cut`) that points at the cards on both sides of each boundary of the cuts (at most ten cards), with every cut (A, B, C) as a proposal under it: its contexts, its boundaries and its strongest argument against. Then one note for each place where the heuristics disagree and for each question only the business can answer (kind `Frage`/`question`), pointing at the cards concerned; at most four.
+- **What.** One note "Wo schneiden wir?" / "Where do we cut?" (kind `Schnitt`/`cut`) that points at the cards on both sides of each boundary of the cuts (at most ten cards), with every cut (A, B, C) as a proposal under it: its contexts, its boundaries and its strongest argument against, in up to five sentences. This note is a summary rather than a single claim; its evidence is the list of signals on the timeline in short. Then one note for each place where the heuristics disagree and for each question only the business can answer (kind `Frage`/`question`), pointing at the cards concerned; at most four.
 - **Say what you published.** End the conversation report with the number
   of notes and proposals written, and where.
 

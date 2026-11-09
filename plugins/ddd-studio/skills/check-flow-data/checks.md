@@ -70,6 +70,10 @@ slice may rely on everything to its left.
   no origin in the story (a gap).
 - The query's answer (where set) is consistent with the rows and the
   query's parameters.
+- A projection rule that seems to contradict the read model's name or the
+  slice description (a view of "open" items that keeps closed ones) is a
+  question for the modeller, not a finding about the data. Offer the
+  change of the rule as a second proposal at most.
 
 ## 7. Quantities add up
 
